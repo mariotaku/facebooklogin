@@ -1,4 +1,4 @@
-Facebook Login 
+Facebook Login Library
 =============
 
 Lightweight version of the Facebook SDK. Its main purpose is to Login with Facebook and obtain the user's Access Token.
@@ -8,8 +8,9 @@ Lightweight version of the Facebook SDK. Its main purpose is to Login with Faceb
 
 
 In the Facebook Developers site, add the Android Key Hash to your App. See https://developers.facebook.com/docs/android/getting-started.
-
+   
 Add "facebooklogin" as a module to your Android Studio project by copying the folder https://github.com/greenhalolabs/facebooklogin/tree/master/facebooklogin.
+
 
 
 In your settings.gradle, add a reference to the library in settings.gradle. See https://github.com/greenhalolabs/facebooklogin/blob/master/settings.gradle.
