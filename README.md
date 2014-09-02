@@ -30,6 +30,14 @@ ANDROID_BUILD_TOOLS_VERSION=20.0.0
 
 In your app's build.gradle, add 'facebooklogin' as dependency. See https://github.com/greenhalolabs/facebooklogin/blob/master/sample/build.gradle.
 
+```java
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':facebooklogin')
+}
+```
+
+
 In your app's AndroidManifest.xml file, add a refence to FacebookLoginActivity. See https://github.com/greenhalolabs/facebooklogin/blob/master/sample/src/main/AndroidManifest.xml.
 
 ```xml
