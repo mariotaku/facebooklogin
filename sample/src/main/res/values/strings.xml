@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">FacebookLoginSample</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">192589667578255</string>
     <string name="login_with_facebook">Login With Facebook</string>
