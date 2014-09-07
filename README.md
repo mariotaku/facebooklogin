@@ -13,7 +13,7 @@ Add the following to your `build.gradle`:
     	mavenCentral()
 	}
 	dependencies {
-		compile 'com.greenhalolabs:faebooklogin:1.0'
+		compile 'com.greenhalolabs:facebooklogin:1.0'
 	}
 ```
 
