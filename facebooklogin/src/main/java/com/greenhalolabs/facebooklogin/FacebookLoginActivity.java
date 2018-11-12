@@ -4,14 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 
 /**
  * Created by dannyroa on 9/1/14.
@@ -35,36 +36,53 @@ public class FacebookLoginActivity extends Activity {
 
     List<String> permissions;
 
-    public static void launch(Fragment fragment, String applicationId, ArrayList<String> permissions) {
+    public static void launch(androidx.fragment.app.Fragment fragment, String applicationId, ArrayList<String> permissions, int requestCode) {
         final Intent intent = new Intent(fragment.getActivity(), FacebookLoginActivity.class);
         intent.putExtra(EXTRA_FACEBOOK_APPLICATION_ID, applicationId);
         intent.putStringArrayListExtra(EXTRA_PERMISSIONS, permissions);
-        fragment.startActivityForResult(intent, FacebookLoginActivity.FACEBOOK_LOGIN_REQUEST_CODE);
+        fragment.startActivityForResult(intent, requestCode);
+    }
+
+    public static void launch(androidx.fragment.app.Fragment fragment, String applicationId, ArrayList<String> permissions) {
+        final Intent intent = new Intent(fragment.getActivity(), FacebookLoginActivity.class);
+        intent.putExtra(EXTRA_FACEBOOK_APPLICATION_ID, applicationId);
+        intent.putStringArrayListExtra(EXTRA_PERMISSIONS, permissions);
+        launch(fragment, applicationId, permissions, FACEBOOK_LOGIN_REQUEST_CODE);
+    }
+
+    public static void launch(android.app.Fragment fragment, String applicationId, ArrayList<String> permissions, int requestCode) {
+        final Intent intent = new Intent(fragment.getActivity(), FacebookLoginActivity.class);
+        intent.putExtra(EXTRA_FACEBOOK_APPLICATION_ID, applicationId);
+        intent.putStringArrayListExtra(EXTRA_PERMISSIONS, permissions);
+        fragment.startActivityForResult(intent, requestCode);
+    }
+
+    public static void launch(Activity activity, String applicationId, ArrayList<String> permissions, int requestCode) {
+        final Intent intent = new Intent(activity, FacebookLoginActivity.class);
+        intent.putExtra(EXTRA_FACEBOOK_APPLICATION_ID, applicationId);
+        intent.putStringArrayListExtra(EXTRA_PERMISSIONS, permissions);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     public static void launch(Activity activity, String applicationId, ArrayList<String> permissions) {
         final Intent intent = new Intent(activity, FacebookLoginActivity.class);
         intent.putExtra(EXTRA_FACEBOOK_APPLICATION_ID, applicationId);
         intent.putStringArrayListExtra(EXTRA_PERMISSIONS, permissions);
-        activity.startActivityForResult(intent, FacebookLoginActivity.FACEBOOK_LOGIN_REQUEST_CODE);
+        launch(activity, applicationId, permissions, FACEBOOK_LOGIN_REQUEST_CODE);
     }
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         permissions = getIntent().getStringArrayListExtra(EXTRA_PERMISSIONS);
 
         String applicationId = getIntent().getStringExtra(EXTRA_FACEBOOK_APPLICATION_ID);
 
-        if (Utility.isPackageExists(getApplicationContext(), KATANA_PACKAGE)) {
-
-            Intent intent =
-                createProxyAuthIntent(applicationId,
-                                      permissions);
-
+        Intent intent = createProxyAuthIntent(applicationId, permissions);
+        if (getPackageManager().resolveActivity(intent, 0) != null) {
             startActivityForResult(intent, AUTHORIZE_FACEBOOK);
-        }
-        else {
+        } else {
             Log.d(TAG, "use web view");
 
             Bundle parameters = new Bundle();
@@ -80,8 +98,7 @@ public class FacebookLoginActivity extends Activity {
                 }
             };
 
-            WebDialog.Builder builder =
-                new AuthDialogBuilder(this, applicationId, parameters)
+            WebDialog.Builder builder = new AuthDialogBuilder(this, applicationId, parameters)
                     .setOnCompleteListener(listener);
             WebDialog loginDialog = builder.build();
             loginDialog.show();
@@ -91,7 +108,7 @@ public class FacebookLoginActivity extends Activity {
     static Intent createProxyAuthIntent(String applicationId, List<String> permissions) {
 
         Intent intent = new Intent().setClassName(KATANA_PACKAGE, KATANA_PROXY_AUTH_ACTIVITY)
-                                    .putExtra(KATANA_PROXY_AUTH_APP_ID_KEY, applicationId);
+                .putExtra(KATANA_PROXY_AUTH_APP_ID_KEY, applicationId);
 
         if (permissions != null && permissions.size() > 0) {
             intent.putExtra(KATANA_PROXY_AUTH_PERMISSIONS_KEY, TextUtils.join(",", permissions));
@@ -104,7 +121,7 @@ public class FacebookLoginActivity extends Activity {
                              FacebookException error) {
         if (values != null) {
             AccessToken token = AccessToken
-                .createFromWebBundle(permissions, values, AccessTokenSource.WEB_VIEW);
+                    .createFromWebBundle(permissions, values, AccessTokenSource.WEB_VIEW);
 
             returnToCallingActivity(token.getToken());
 
@@ -113,8 +130,7 @@ public class FacebookLoginActivity extends Activity {
                 returnToCallingActivityWithError("User canceled log in.");
             } else if (error != null) {
                 returnToCallingActivityWithError(error.getMessage());
-            }
-            else {
+            } else {
                 returnToCallingActivityWithError("Unexpected Error.");
             }
         }
@@ -173,9 +189,8 @@ public class FacebookLoginActivity extends Activity {
     }
 
 
-
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)  {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == AUTHORIZE_FACEBOOK) {
 
@@ -204,7 +219,7 @@ public class FacebookLoginActivity extends Activity {
 
         if (error == null) {
             AccessToken token = AccessToken.createFromWebBundle(permissions, extras,
-                                                                AccessTokenSource.FACEBOOK_APPLICATION_WEB);
+                    AccessTokenSource.FACEBOOK_APPLICATION_WEB);
             returnToCallingActivity(token.getToken());
         } else if (errorsProxyAuthDisabled.contains(error)) {
             returnToCallingActivityWithError(error);
@@ -234,9 +249,9 @@ public class FacebookLoginActivity extends Activity {
 
 
     public static final Collection<String> errorsProxyAuthDisabled =
-        Utility.unmodifiableCollection("service_disabled", "AndroidAuthKillSwitchException");
+            Utility.unmodifiableCollection("service_disabled", "AndroidAuthKillSwitchException");
     public static final Collection<String> errorsUserCanceled =
-        Utility.unmodifiableCollection("access_denied", "OAuthAccessDeniedException");
+            Utility.unmodifiableCollection("access_denied", "OAuthAccessDeniedException");
 
 
 }

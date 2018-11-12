@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FacebookLogin.iml" filepath="$PROJECT_DIR$/FacebookLogin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/facebooklogin/facebooklogin.iml" filepath="$PROJECT_DIR$/facebooklogin/facebooklogin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/facebooklogin/facebooklogin-facebooklogin.iml" filepath="$PROJECT_DIR$/facebooklogin/facebooklogin-facebooklogin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mariotaku-facebooklogin.iml" filepath="$PROJECT_DIR$/mariotaku-facebooklogin.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
     </modules>
   </component>
 </project>
-
