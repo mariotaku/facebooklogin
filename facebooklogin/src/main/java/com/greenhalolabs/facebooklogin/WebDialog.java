@@ -35,8 +35,6 @@ public class WebDialog extends Dialog {
     static final String CANCEL_URI = "fbconnect://cancel";
     static final boolean DISABLE_SSL_CHECK_FOR_TESTING = false;
 
-    public static final int DEFAULT_THEME = android.R.style.Theme_Translucent_NoTitleBar;
-
     private String url;
     private OnCompleteListener onCompleteListener;
     private WebView webView;
@@ -70,7 +68,7 @@ public class WebDialog extends Dialog {
      * be a valid URL pointing to a Facebook Web Dialog
      */
     public WebDialog(Context context, String url) {
-        this(context, url, DEFAULT_THEME);
+        this(context, url, 0);
     }
 
     /**
@@ -373,7 +371,7 @@ public class WebDialog extends Dialog {
         private Context context;
         private String applicationId;
         private String action;
-        private int theme = DEFAULT_THEME;
+        private int theme;
         private OnCompleteListener listener;
         private Bundle parameters;
 
